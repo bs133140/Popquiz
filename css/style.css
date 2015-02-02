@@ -1,0 +1,86 @@
+.topmenu{
+
+	line-height: 40px;
+	font-size: 25px;
+	color:#fff;
+	margin-right:0px;
+}
+
+.topmenu li{padding:5px;cursor:pointer;}
+
+.topmenu li:hover{color:#B86779;};
+
+#rankingtitle{
+	color:#fff !important;
+}
+
+#poster{
+
+	width:100%;
+	height:100%;
+	background: url(../images/popquiz2014.jpg);
+	/*background-repeat: no-repeat;*/
+	background-position: 50% -20%;
+}
+
+body{height:100%;margin:0;padding:0;margin-left:100px;margin-right:100px;}
+html{height:100%;margin:0;padding:0;}
+
+#mainwrapper{	
+	display:none;
+	height:100%;
+}
+
+#wrapper{position:relative;height:100%;}
+
+#poster{position:absolute;height:100%;top:0px;left:0;}
+
+.red{
+	background-color: rgba(255,0,0,0.5);
+	color:#fff;
+}
+
+.orange{
+		background-color: rgba(255,153,0,0.5);
+	color:#666;
+}
+
+.green{
+
+		background-color: transparent;
+	color:#666;
+}
+
+.navbar{display:none;}
+
+
+#list{display:none;}
+
+/*#list tbody,#ranking tbody{font-size:16px;}
+#list thead,#ranking thead{font-size:14px;}*/
+
+/*#list .badge, #ranking .badge{font-size:14px;}*/
+
+.highscore{
+	font-size:25px;
+	font-weight:bold;
+}
+
+.panel-heading{
+	font-size:18px;
+}
+
+.top3total{
+	text-align:left;
+	font-size:12px;
+}
+
+.top3lastround{
+	text-align:left;
+	font-size:12px;
+}
+
+.odd{
+
+	background-color:#eee !important;
+}

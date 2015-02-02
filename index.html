@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>Respons PopQuiz</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/jquery.dataTables.css" rel="stylesheet">
+    <link href="css/dataTables.fixedColumns.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/style.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <img src="images/vzwresponse.jpg" style="height:50px;" />&nbsp;&nbsp;&nbsp;<img src="images/popquiz.png" style="height:50px;" />
+          
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right topmenu">
+            <li><span id="iconplay" style="display:none;" class="glyphicon glyphicon-play" aria-hidden="true" title="autoscroll"></span></li>
+            <li><span id="iconstat" style="display:none;" class="glyphicon glyphicon-stats" aria-hidden="true" title="podium"></span></li>
+            <li><span id="iconopen" class="glyphicon glyphicon-open" aria-hidden="true" title="open"></span><input type="file" id="fileInput" style="display:none;"></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div id="wrapper">
+      <div id="poster"></div>
+
+      <div id="mainwrapper" class="">
+        <!--
+        <div class="row">
+          <div class="col-sm-3">
+            <div id="rounds"></div>
+          </div>
+          <div class="col-sm-9">
+            <div class="row">
+              <div class="col-sm-6">
+                <div id="roundscore"></div>
+              </div>
+              <div class="col-sm-6">
+                <div id="generalscore"></div>
+              </div>
+            </div>
+          </div>
+        </div>-->
+
+
+        <div id="list">
+          <table class="stripe hover" cellspacing="0">
+            <thead id="listhead"></thead>
+            <tbody id="listbody"></tbody>
+          </table>
+        </div>
+
+
+
+        <div id="ranking">
+          <table class="stripe hover" cellspacing="0" width="100%">
+            <thead id="rankinghead"></thead>
+            <tbody id="rankingbody"></tbody>
+          </table>           
+          <div></div>
+        </div>
+
+
+      </div>
+    </div>
+
+
+
+    <div id="listmodal" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body">
+            <center><h1>SCORES PER RONDE</h1></center><br/>
+            <div class="panel panel-default" style="text-align:center;">
+              <div class="panel-heading"><span class="lastround"></span></div>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-xs-6"><h4>HOOGSTE SCORE</h4><div class="highscore"><span class="lastroundhighest"></span> / <span class="lastroundmax"></span></div></div>
+                  <div class="col-xs-6"><h4>GEMIDDELDE SCORE</h4><div class="highscore"><span class="lastroundaverage"></span> / <span class="lastroundmax"></span></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+
+
+    <div id="rankingmodal" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body">
+            <center><h1>DE STAND NA <span class="lastround"></span></h1></center>
+            <div class="panel panel-default">
+              <div class="panel-heading"><center><span class="lastround"></span></center></div>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-xs-6"><h4>TOP 3 <span class="lastround"></span></h4><div class="top3lastround"></div></div>
+                  <div class="col-xs-6"><h4>TOP 3 TOTAAL</h4><div class="top3total"></div></div>
+                </div>
+              </div>
+            </div>           
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.sparkline.min.js"></script>
+    <script src="js/jquery.dataTables.js"></script>
+    <script src="js/dataTables.fixedColumns.js"></script>
+    <script src="js/main.js"></script>
+    
+
+    
+    
+
+
+  </body>
+</html>
