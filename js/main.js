@@ -12,7 +12,8 @@ app.popquiz = (function () {
         rankingtable = null,
         lastroundhighest = 0,
         lastroundaverage = 0,
-        lastroundtotal = 0;
+        lastroundtotal = 0,
+        scrolling = false;
 
 	function privateMethod() {
 		// ...
@@ -483,7 +484,6 @@ app.popquiz = (function () {
 
 	function setEvents(){
 
-
 		// read file
 		var fileInput = document.getElementById('fileInput');
 		fileInput.addEventListener('change', readFile);
@@ -494,7 +494,7 @@ app.popquiz = (function () {
 
 		// top menu
 		$(document).keypress(function(e){
-			
+
 			if(e.keyCode==113)
 			{
 				$('.navbar').fadeToggle();
@@ -525,9 +525,15 @@ app.popquiz = (function () {
 	    	else
 	    	{
 	    		// rank
-	  			var oSettings = rankingtable.settings();
-	    		oSettings[0].oScroll.sY = $(window).height()-62; 
-	    		rankingtable.draw();
+	    		if(typeof rankingtable != 'undefined' && rankingtable != null)
+	    		{
+	    			//console.info(rankingtable);
+		  			var oSettings = rankingtable.settings();
+		    		oSettings[0].oScroll.sY = $(window).height()-62; 
+		    		rankingtable.draw();
+
+	    		}
+
 	    	}
 
 
