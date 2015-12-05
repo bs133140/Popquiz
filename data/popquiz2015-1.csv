@@ -1,60 +1,57 @@
 NR;PLOEG;Reeks 1;Reeks 2;Reeks 3;Reeks 4;Reeks 5;Reeks 6;Reeks 7;Reeks 8;Reeks 9;Reeks 10;Reeks 11;Reeks 12;TOT.
-;MAXIMUM;30;30;40;30;20;30;30;20;30;30;30;20;60
-1;Scary Monsters;30;30;;;;;;;;;;;60
-2;Rock Monsieur;26;26;;;;;;;;;;;52
-3;Paris Hilton Lookalikes;30;30;;;;;;;;;;;60
-4;Comfortably Dumb;20;20;;;;;;;;;;;40
-5;Busty Springfield;24;24;;;;;;;;;;;48
-6;Los Locos;18;18;;;;;;;;;;;36
-7;Flying Foxes;22;22;;;;;;;;;;;44
-8;City Trash;30;30;;;;;;;;;;;60
-9;De Giraf;30;30;;;;;;;;;;;60
-10;Bruce Horny & The Rest;25;25;;;;;;;;;;;50
-11;Green Onions;30;30;;;;;;;;;;;60
-12;Martha Wainwrong Ain't Right ;21;21;;;;;;;;;;;42
-13;Koevoet Is Beter Dan Boullie;24;24;;;;;;;;;;;48
-14;WMYA;25;25;;;;;;;;;;;50
-15;De Stijlpaardroggen;30;30;;;;;;;;;;;60
-16;Testedoene;30;30;;;;;;;;;;;60
-17;Goedkoop Zat In 't Halve Maantje;28;28;;;;;;;;;;;56
-18;De Ratata's;30;30;;;;;;;;;;;60
-19;The 4 sLEEpless Horsemen Of The Apocalypse;29;29;;;;;;;;;;;58
-20;Starbuk & Apollo;12;12;;;;;;;;;;;24
-21;Ploeg David Hanssens;21;21;;;;;;;;;;;42
-22;Jan, Piet, Joris en Sam Gooris;24;24;;;;;;;;;;;48
-23;De Plankierkaarters;28;28;;;;;;;;;;;56
-24;Zazawie;29;29;;;;;;;;;;;58
-25;Vlassenbroek 2000;27;27;;;;;;;;;;;54
-26;No ID;30;30;;;;;;;;;;;60
-27;Die Schmetterlinge;26;26;;;;;;;;;;;52
-28;Ploeg Faan De Bisschop;23;23;;;;;;;;;;;46
-29;Rode BMW staat fout geparkeerd;27;27;;;;;;;;;;;54
-30;Silly Wommers;29;29;;;;;;;;;;;58
-31;De Popingers ;30;30;;;;;;;;;;;60
-32;Lou Reed in Velo;27;27;;;;;;;;;;;54
-33;My Dying Pride;26;26;;;;;;;;;;;52
-34;Cevisten;27;27;;;;;;;;;;;54
-35;De vierkante meter;20;20;;;;;;;;;;;40
-36;Drink Floyd;24;24;;;;;;;;;;;48
-37;De Stimpy's;28;28;;;;;;;;;;;56
-38;De Prinsen Der Duisternis;26;26;;;;;;;;;;;52
-39;Tequila Overdrive;29;29;;;;;;;;;;;58
-40;De buis van Eustachius;28;28;;;;;;;;;;;56
-41;Franca Xapa;20;20;;;;;;;;;;;40
-42;Zootje Ongeregeld;18;18;;;;;;;;;;;36
-43;A Tribe Called Wuk Est?;25;25;;;;;;;;;;;50
-44;Pietboef Mipus Mipus;27;27;;;;;;;;;;;54
-45;Dead Daisy Smiles ft. Baldwin;19;19;;;;;;;;;;;38
-46;Terrasvrienden;28;28;;;;;;;;;;;56
-47;Klein Zottegem;24;24;;;;;;;;;;;48
-48;De Hertenkoppen;22;22;;;;;;;;;;;44
-49;Floyd;28;28;;;;;;;;;;;56
-50;Nuns & Mozes;29;29;;;;;;;;;;;58
-51;Seastickseeve;20;20;;;;;;;;;;;40
-52;Dawetekiknie;20;20;;;;;;;;;;;40
-53;Quarciabella Batar;30;30;;;;;;;;;;;60
-54;Freddie Vedder;30;30;;;;;;;;;;;60
-55;De Vleesgeworden Genialiteit en Aanverwante;25;25;;;;;;;;;;;50
-56;Ploeg Pieter Dewolf;19;19;;;;;;;;;;;38
-57;Voor Spek En Zonen;13;13;;;;;;;;;;;26
-58;De Gierende Bandjes;7;7;;;;;;;;;;;14
+;MAXIMUM;20;30;40;30;20;30;30;20;30;30;30;20;20
+1;Scary Monsters;18;;;;;;;;;;;;18
+2;Rock Monsieur;17;;;;;;;;;;;;17
+3;Paris Hilton Lookalikes;14;;;;;;;;;;;;14
+4;Comfortably Dumb;14;;;;;;;;;;;;14
+5;Busty Springfield;11;;;;;;;;;;;;11
+6;Los Locos;14;;;;;;;;;;;;14
+7;Flying Foxes;13;;;;;;;;;;;;13
+8;City Trash;14;;;;;;;;;;;;14
+9;De Giraf;13;;;;;;;;;;;;13
+10;Bruce Horny & The Rest;19;;;;;;;;;;;;19
+11;Green Onions;15;;;;;;;;;;;;15
+12;Martha Wainwrong Ain't Right ;17;;;;;;;;;;;;17
+13;Koevoet Is Beter Dan Boullie;12;;;;;;;;;;;;12
+14;WMYA;15;;;;;;;;;;;;15
+15;Testedoene;15;;;;;;;;;;;;15
+16;Goedkoop Zat In 't Halve Maantje;17;;;;;;;;;;;;17
+17;The 4 sLEEpless Horsemen Of The Apocalypse;16;;;;;;;;;;;;16
+18;Starbuk & Apollo;16;;;;;;;;;;;;16
+19;Car Comfort Solutions;5;;;;;;;;;;;;5
+20;De Plankierkaarters;14;;;;;;;;;;;;14
+21;Zazawie;13;;;;;;;;;;;;13
+22;Vlassenbroek 2000;18;;;;;;;;;;;;18
+23;No ID;12;;;;;;;;;;;;12
+24;De Stijlpaardroggen;10;;;;;;;;;;;;10
+25;The Return of The Dolly Dots;12;;;;;;;;;;;;12
+26;Rode BMW staat fout geparkeerd;13;;;;;;;;;;;;13
+27;Silly Wommers;17;;;;;;;;;;;;17
+28;De Popingers ;13;;;;;;;;;;;;13
+29;Lou Reed in Velo;17;;;;;;;;;;;;17
+30;My Dying Pride;17;;;;;;;;;;;;17
+31;Cevisten;16;;;;;;;;;;;;16
+32;De vierkante meter;7;;;;;;;;;;;;7
+33;Drink Floyd;12;;;;;;;;;;;;12
+34;De Stimpy's;15;;;;;;;;;;;;15
+35;De Prinsen Der Duisternis;9;;;;;;;;;;;;9
+36;Tequila Overdrive;16;;;;;;;;;;;;16
+37;De buis van Eustachius;17;;;;;;;;;;;;17
+38;Franca Xapa;18;;;;;;;;;;;;18
+39;Zootje Ongeregeld;16;;;;;;;;;;;;16
+40;A Tribe Called Wuk Est?;17;;;;;;;;;;;;17
+41;Pietboef Mipus Mipus;0;;;;;;;;;;;;0
+42;Dead Daisy Smiles ft. Baldwin;11;;;;;;;;;;;;11
+43;Klein Zottegem;14;;;;;;;;;;;;14
+44;De Hertenkoppen;;;;;;;;;;;;;0
+45;Floyd;12;;;;;;;;;;;;12
+46;Nuns & Mozes;13;;;;;;;;;;;;13
+47;Dawetekiknie;3;;;;;;;;;;;;3
+48;Freddie Vedder;9;;;;;;;;;;;;9
+49;De Vleesgeworden Genialiteit en Aanverwante;16;;;;;;;;;;;;16
+50;Barbara Spreidstand;13;;;;;;;;;;;;13
+51;Voor Spek En Zonen;8;;;;;;;;;;;;8
+52;De Gierende Bandjes;3;;;;;;;;;;;;3
+53;The Bet;8;;;;;;;;;;;;8
+54;De Holvoetjes;9;;;;;;;;;;;;9
+55;Die Schmetterlinge;15;;;;;;;;;;;;15
