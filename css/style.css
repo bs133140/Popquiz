@@ -1,7 +1,7 @@
 .topmenu{
 
 	line-height: 40px;
-	font-size: 25px;
+	font-size: 20px;
 	color:#fff;
 	margin-right:0px;
 }
@@ -18,7 +18,7 @@
 
 	width:100%;
 	height:100%;
-	background: url(../images/popquiz2015.jpg);
+	background: url(../images/popquiz2016.png);
 	background-repeat: repeat-y;
 	background-position: 50% 50%;
 }
