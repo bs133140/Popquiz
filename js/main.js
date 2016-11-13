@@ -14,7 +14,8 @@ app.popquiz = (function () {
         lastroundaverage = 0,
         lastroundtotal = 0,
         scrolling = false,
-        scrollDown = true;
+        scrollDown = true,
+        filter = 0; // 0 = all, 1 = circuit, 2 = gelegenheid
 
 	function privateMethod() {
 		// ...
@@ -37,9 +38,9 @@ app.popquiz = (function () {
 		    	if(i==0){
 		    		for(var r=1;r<entries.length;r++)
 		    		{
-	                    if(r>1)
+	                    if(r>2)
 	                    { 
-	                    	rounds.push({id:(r-1),name:entries[r]});
+	                    	rounds.push({id:(r-2),name:entries[r]});
 	                    	rankingAfterRound.push([]);
 	                    	rankingPerRound.push([]);
 	                    }
@@ -48,16 +49,16 @@ app.popquiz = (function () {
 
 		    	// read maxs
 		    	if(i==1){
-		    		for(var r=2;r<entries.length;r++)
+		    		for(var r=3;r<entries.length;r++)
 		    		{
-						rounds[(r-2)].max=entries[r];
+						rounds[(r-3)].max=entries[r];
 		    		}
 		    	}
 		    	
 	            // read data
 		    	if(i>1){
 
-	                var team = {scores:[], id:(i-1)};
+	                var team = {scores:[], id:(i-1), type: 0};
 	                var totalscore = 0;
 
 		    		for(var r=1;r<entries.length;r++)
@@ -68,6 +69,12 @@ app.popquiz = (function () {
 	                    if(r==1){
 	                        team.name=entry;                          
 	                    }
+	                    else if(r==2)
+	                    {
+	                    	if(entry == '1'){
+	                    		team.type = 1;
+	                    	}	                    	
+	                    }
 	                    else{
 	                    	var score = entry==""?0:parseInt(entry,10);
 	                    	totalscore += score;
@@ -75,33 +82,46 @@ app.popquiz = (function () {
 	                        
 	                        if(r<(entries.length-1))
 	                        {
-	                        	if(score>0 && (r-2)>lastround){lastround=(r-2);}
-								rankingAfterRound[(r-2)].push({id:(i-1), score:totalscore});
-								rankingPerRound[(r-2)].push({id:(i-1), score:score});
+	                        	if(score>0 && (r-3)>lastround){lastround=(r-3);}
+								rankingAfterRound[(r-3)].push({id:(i-1), score:totalscore});
+								rankingPerRound[(r-3)].push({id:(i-1), score:score});
 	                        }
 
 	                    }
 		    		}
 		    		team.total = parseInt(entries[(entries.length-1)],10);
 	                teams.push(team);
-
 		    	}
 
-		    }
-	    	
+		    }    	
 
 	    }
-
 		$('#poster').fadeOut(renderInterface);
-
-
 	}
 
-	function renderInterface(){
+	function renderInterface(teamtype){
+		var filteredteams = 0;
 
 		// show main wrapper
 		$("#mainwrapper").show();
 
+
+		// Clean
+		if(listtable != null)
+		{
+			listtable.destroy();
+		}
+
+		if(rankingtable != null)
+		{
+			rankingtable.destroy();
+		}
+
+		lastroundtotal = 0;
+		lastroundhighest = 0;
+
+		$('#list').html('<table class="stripe hover" cellspacing="0"><thead id="listhead"></thead><tbody id="listbody"></tbody></table>');
+		$('#ranking').html('<table class="stripe hover" cellspacing="0" width="100%"><thead id="rankinghead"></thead><tbody id="rankingbody"></tbody></table><div></div>');
 		
 		// sort rankings
 		for(var t=0;t<rankingAfterRound.length;t++){
@@ -150,36 +170,44 @@ app.popquiz = (function () {
 
 			for(var s=0;s<rankingPerRound[t].length;s++){
 
-				if(t==lastround)
+				if(typeof teamtype == 'undefined' || teams[rankingPerRound[t][s].id-1].type == teamtype)
 				{
-					lastroundtotal += rankingPerRound[t][s].score;
-					if(rankingPerRound[t][s].score > lastroundhighest){
-						lastroundhighest = rankingPerRound[t][s].score;
+					if(t==lastround)
+					{
+						filteredteams++;
+						lastroundtotal += rankingPerRound[t][s].score;
+						if(rankingPerRound[t][s].score > lastroundhighest){
+							lastroundhighest = rankingPerRound[t][s].score;
+						}
 					}
+
+					if(rankingPerRound[t][s].score!=prevscore)
+					{
+						rank++;
+						prevscore = rankingPerRound[t][s].score;
+					}
+					rankingPerRound[t][s].rank = rank;
 				}
 
-				if(rankingPerRound[t][s].score!=prevscore)
-				{
-					rank++;
-					prevscore = rankingPerRound[t][s].score;
-				}
-				rankingPerRound[t][s].rank = rank;
 			}
 			
 		}
+		console.info(teamtype);
+		//console.info(teams);
 
     	// render ranking
-		renderRanking(lastround);
-		renderList(lastround);
+		renderRanking(lastround, teamtype);
+		renderList(lastround, teamtype);
 
-		showTable();
+		showTable(false);
 
 		$('#iconstat').show();
 		$('#iconplay').show();
+		$('#iconfilter').show();
 
 		$('.navbar').fadeOut();
 
-		lastroundaverage = parseFloat(lastroundtotal / teams.length).toFixed(1);
+		lastroundaverage = parseFloat(lastroundtotal / filteredteams).toFixed(1);
 
 
 		$('.lastround').html(rounds[lastround].name);
@@ -189,7 +217,7 @@ app.popquiz = (function () {
 	}
 
 
-	function renderList(round){
+	function renderList(round, teamtype){
 		// render list
 		var $listbody = $('#listbody'),
 			$listhead = $('#listhead');
@@ -212,32 +240,33 @@ app.popquiz = (function () {
 
 		$listhead.wrapInner('<tr></tr>');
 
-
 		// Teams
 		$.each(teams, function(i,team){
 
-			// Team name
-			var mytable ='<tr><td>' + team.id + '.</td><td>' + ( team.name.length>38?HTMLEncode(team.name.substring(0,35)) + ' ...':HTMLEncode(team.name)) + '</td>';
+			if(typeof teamtype == 'undefined' || teamtype == team.type)
+			{
+				// Team name
+				var mytable ='<tr><td>' + team.id + '.</td><td>'+team.type + ( team.name.length>38?HTMLEncode(team.name.substring(0,35)) + ' ...':HTMLEncode(team.name)) + '</td>';
 
-			// Team scores
-			$.each(team.scores,function(x,score){
-				
-				if(x<=lastround || x==(rounds.length-1))
-				{
-					mytable +='<td style=""><span class="badge '+ (x<=lastround?getScoreStyle(i, score, rounds[x].max):"") +'">' + score +'</span></td>';
-				}
+				// Team scores
+				$.each(team.scores,function(x,score){
+					
+					if(x<=lastround || x==(rounds.length-1))
+					{
+						mytable +='<td style=""><span class="badge '+ (x<=lastround?getScoreStyle(i, score, rounds[x].max):"") +'">' + score +'</span></td>';
+					}
 
-			});
-	    	mytable +="</tr>";
+				});
+		    	mytable +="</tr>";
 
-	    	$listbody.append(mytable);
-
+		    	$listbody.append(mytable);
+			}
 		});
 
 	}
 
 
-	function renderRanking(round){
+	function renderRanking(round, teamtype){
 		// render ranking
 		var $rankinghead = $('#rankinghead'),
 			$rankingbody = $('#rankingbody'),
@@ -257,33 +286,29 @@ app.popquiz = (function () {
 
 		$.each(rankingPerRound[round], function(t,tms){
 
-			if(top3lstcnt<=3 || top3prev == tms.score)
+			if(typeof teamtype == 'undefined' || teamtype == teams[tms.id-1].type)
 			{
-				top3lastround += top3rnk + ". " + teams[tms.id-1].name + " ("+tms.score+")<br/>";
-				top3lstcnt++;
-
-				if(top3prev!=tms.score && top3rnk>1)
+				if(top3lstcnt<=3 || top3prev == tms.score)
 				{
-					top3rnk++;
-				}
+					top3lastround += top3rnk + ". " + teams[tms.id-1].name + " ("+tms.score+")<br/>";
+					top3lstcnt++;
 
-				top3prev = tms.score;
+					if(top3prev!=tms.score && top3rnk>1)
+					{
+						top3rnk++;
+					}
+
+					top3prev = tms.score;
+				}
 			}
 		});
 
-
-
-
-
+		// filtered ranking
+		var specialrank = {},
+			specialcount = 0;
 
 		$('#rankingtitle').html('Ranking na '+rounds[round].name);
 		$.each(rankingAfterRound[round], function(r,rank){
-
-			if(rank.rank <= 3)
-			{
-				top3total += rank.rank + ". " + teams[rank.id-1].name + " ("+rank.score+")<br>";
-			}
-
 
 			// compare to previous round
 			var prevrank = 0, diff=0;
@@ -323,8 +348,31 @@ app.popquiz = (function () {
 
 			});
 
-			// render table
-			$rankingbody.append('<tr><td>' + rank.rank + '</td><td>' + (diff>0?'+':(diff==0?'':'-')) + '</td><td>' + teams[rank.id-1].name + '</td><td>' + rankingPerRound[round-1][rrid0].score + '</td><td>' + rankingPerRound[round][rrid].score + '</td><td><span class="badge">' + rank.score +'</span></td></tr>'); //<td><span class="inlinesparkline">'+teams[rank.id-1].negranks.join(',')+'</span></td><td>'+getMinOfArray(teams[rank.id-1].ranks)+'</td><td>'+getMaxOfArray(teams[rank.id-1].ranks)+'</td></tr>');
+			if(typeof teamtype == 'undefined' || teamtype == teams[rank.id-1].type)
+			{
+				specialcount++;
+				var defrank = rank.rank;
+
+				if(teamtype == teams[rank.id-1].type)
+				{
+					if(typeof specialrank[rank.rank] != 'undefined')
+					{
+						defrank = specialrank[rank.rank];
+					}
+					else{
+						specialrank[rank.rank] = specialcount;
+						defrank = specialcount;
+					}
+				}
+
+				if(defrank <= 3)
+				{
+					top3total += defrank + ". " + teams[rank.id-1].name + " ("+rank.score+")<br>";
+				}
+
+				// render table
+				$rankingbody.append('<tr><td>' + defrank + '</td><td>' + (diff>0?'+':(diff==0?'':'-')) + '</td><td>' + teams[rank.id-1].name + '</td><td>' + rankingPerRound[round-1][rrid0].score + '</td><td>' + rankingPerRound[round][rrid].score + '</td><td><span class="badge">' + rank.score +'</span></td></tr>'); //<td><span class="inlinesparkline">'+teams[rank.id-1].negranks.join(',')+'</span></td><td>'+getMinOfArray(teams[rank.id-1].ranks)+'</td><td>'+getMaxOfArray(teams[rank.id-1].ranks)+'</td></tr>');
+			}
 
 		});
 
@@ -382,8 +430,15 @@ app.popquiz = (function () {
 
 	function readFile(e) {
 
-		var file = fileInput.files[0];
+		// Clear data
+		teams = [];
+		rounds = [];
+		rankingAfterRound = [];
+        rankingPerRound = [];
+        lastround = 0;
 
+        // read file
+		var file = fileInput.files[0];
 		var reader = new FileReader();
 
 		reader.onload = function(e) {
@@ -471,7 +526,14 @@ app.popquiz = (function () {
     	} );*/
 	}
 
-	function showTable(){
+	function showTable(toggle){
+		var dotoggle = true;
+
+		if(typeof toggle != 'undefined')
+		{
+			dotoggle = toggle;
+		}
+
 		// set scrolling
 		if(scrolling){
 			stopScroll();
@@ -481,11 +543,22 @@ app.popquiz = (function () {
 		// show table
 		if($('#list').is(':visible'))
 		{
-			showRanking();
+			if(dotoggle)
+			{
+				showRanking();
+			}else{
+				showList();
+			}
+			
 			//$('.inlinesparkline').sparkline('html', {width:'100px',fillColor: '',lineColor: '#666666'}); 
 		}
 		else{
-			showList();
+			if(dotoggle)
+			{
+				showList();
+			}else{
+				showRanking();
+			}
 		}
 	}
 
@@ -502,20 +575,39 @@ app.popquiz = (function () {
 		// top menu
 		$(document).keypress(function(e){
 
+			// Toggle menu
 			if(e.keyCode==113)
 			{
 				$('.navbar').fadeToggle();
 			}
 
+			// Toggle list/ranking
 			if(e.keyCode==115)
 			{				
 				showTable();
 			}
 
+			// Toggle autoplay
 			if(e.keyCode==100)
 			{				
 				$('#iconplay').click();
 			}
+
+			// Toggle filter
+			if(e.keyCode==102)
+			{				
+				$('#iconfilter').click();
+			}
+
+			// Open new file
+			if(e.keyCode==32)
+			{				
+				$('#fileInput').click();
+			}
+		});
+
+		$('#iconfilter').click(function(){
+			doFilter();
 		});
 
 		$('#iconplay').click(function(){
@@ -550,6 +642,35 @@ app.popquiz = (function () {
 	    	}
 		});
 
+	}
+
+	function doFilter(){
+		if(filter == 0){
+			filter = 1;
+			renderInterface(1);
+		}
+		else{
+			filter = 0;
+			renderInterface();
+		}
+		
+		/*
+		if($('#list').is(':visible'))
+		{
+			if(listtable != null)
+			{
+				listtable.destroy();
+			}
+			renderList(lastround, 1);			
+		}
+		else{
+			if(rankingtable != null)
+			{
+				rankingtable.destroy();
+			}
+			renderRanking(lastround, 1);
+		}
+		showTable(false);*/
 	}
 
 
