@@ -5,6 +5,7 @@ Popquiz scorebord
 Shortcuts:
 * Q: Show toolbar
 * S: Toggle table views
+* D: Toggle auto scroll
 
 
 De uitslagen voor elk team worden per ronde ingevuld in het popquiz***.csv bestand (voorbeeld kan je vinden in de data folder), wanneer alles is ingevuld kan je de webpagina openen (index.html)
