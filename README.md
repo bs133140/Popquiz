@@ -3,6 +3,7 @@
 Popquiz scorebord
 
 Shortcuts:
+* Spatie: Open nieuw bestand
 * Q: Show toolbar
 * S: Toggle table views
 * D: Toggle auto scroll
