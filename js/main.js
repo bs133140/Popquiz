@@ -15,7 +15,7 @@ app.popquiz = (function () {
         lastroundtotal = 0,
         scrolling = false,
         scrollDown = true,
-        filter = 0; // 0 = all, 1 = circuit, 2 = gelegenheid
+        teamtype = 0; // 0 = all, 1 = circuit, 2 = gelegenheid
 
 	function privateMethod() {
 		// ...
@@ -58,7 +58,7 @@ app.popquiz = (function () {
 	            // read data
 		    	if(i>1){
 
-	                var team = {scores:[], id:(i-1), type: 0};
+	                var team = {scores:[], id:(i-1), type: 2};
 	                var totalscore = 0;
 
 		    		for(var r=1;r<entries.length;r++)
@@ -99,7 +99,7 @@ app.popquiz = (function () {
 		$('#poster').fadeOut(renderInterface);
 	}
 
-	function renderInterface(teamtype){
+	function renderInterface(){
 		var filteredteams = 0;
 
 		// show main wrapper
@@ -170,7 +170,7 @@ app.popquiz = (function () {
 
 			for(var s=0;s<rankingPerRound[t].length;s++){
 
-				if(typeof teamtype == 'undefined' || teams[rankingPerRound[t][s].id-1].type == teamtype)
+				if(teamtype == 0 || teams[rankingPerRound[t][s].id-1].type == teamtype)
 				{
 					if(t==lastround)
 					{
@@ -192,12 +192,10 @@ app.popquiz = (function () {
 			}
 			
 		}
-		console.info(teamtype);
-		//console.info(teams);
 
     	// render ranking
-		renderRanking(lastround, teamtype);
-		renderList(lastround, teamtype);
+		renderRanking(lastround);
+		renderList(lastround);
 
 		showTable(false);
 
@@ -214,10 +212,21 @@ app.popquiz = (function () {
 		$('.lastroundhighest').html(lastroundhighest);
 		$('.lastroundaverage').html(lastroundaverage);
 		$('.lastroundmax').html(rounds[lastround].max);
+
+		var ftext = "";
+		if(teamtype == 1)
+		{
+			ftext = " - Circuitploegen";
+		}
+		if(teamtype == 2)
+		{
+			ftext = " - Gelegenheidsploegen";
+		}
+		$('.filtertext').html(ftext);
 	}
 
 
-	function renderList(round, teamtype){
+	function renderList(round){
 		// render list
 		var $listbody = $('#listbody'),
 			$listhead = $('#listhead');
@@ -243,10 +252,10 @@ app.popquiz = (function () {
 		// Teams
 		$.each(teams, function(i,team){
 
-			if(typeof teamtype == 'undefined' || teamtype == team.type)
+			if(teamtype == 0 || teamtype == team.type)
 			{
 				// Team name
-				var mytable ='<tr><td>' + team.id + '.</td><td>'+team.type + ( team.name.length>38?HTMLEncode(team.name.substring(0,35)) + ' ...':HTMLEncode(team.name)) + '</td>';
+				var mytable ='<tr><td>' + team.id + '.</td><td>' + ( team.name.length>38?HTMLEncode(team.name.substring(0,35)) + ' ...':HTMLEncode(team.name)) + '</td>';
 
 				// Team scores
 				$.each(team.scores,function(x,score){
@@ -266,7 +275,7 @@ app.popquiz = (function () {
 	}
 
 
-	function renderRanking(round, teamtype){
+	function renderRanking(round){
 		// render ranking
 		var $rankinghead = $('#rankinghead'),
 			$rankingbody = $('#rankingbody'),
@@ -274,7 +283,7 @@ app.popquiz = (function () {
 			top3lastround = "",
 			top3lstcnt = 1,
 			top3prev = 0,
-			top3rnk = 1;
+			top3rnk = 0;
 
 		$rankinghead.empty();
 		$rankingbody.empty();
@@ -286,18 +295,17 @@ app.popquiz = (function () {
 
 		$.each(rankingPerRound[round], function(t,tms){
 
-			if(typeof teamtype == 'undefined' || teamtype == teams[tms.id-1].type)
+			if(teamtype == 0 || teamtype == teams[tms.id-1].type)
 			{
+
 				if(top3lstcnt<=3 || top3prev == tms.score)
 				{
+					if(top3prev!=tms.score)
+					{
+						top3rnk = top3lstcnt;
+					}
 					top3lastround += top3rnk + ". " + teams[tms.id-1].name + " ("+tms.score+")<br/>";
 					top3lstcnt++;
-
-					if(top3prev!=tms.score && top3rnk>1)
-					{
-						top3rnk++;
-					}
-
 					top3prev = tms.score;
 				}
 			}
@@ -348,7 +356,7 @@ app.popquiz = (function () {
 
 			});
 
-			if(typeof teamtype == 'undefined' || teamtype == teams[rank.id-1].type)
+			if(teamtype == 0 || teamtype == teams[rank.id-1].type)
 			{
 				specialcount++;
 				var defrank = rank.rank;
@@ -467,7 +475,7 @@ app.popquiz = (function () {
 	function showList(){
 
 		$('.modal').modal('hide');
-		$('#listmodal').modal('show');
+		setTimeout(function(){$('#listmodal').modal('show');}, 510);
 
 		var $list = $('#list'),
 			$rank = $('#ranking');
@@ -483,7 +491,7 @@ app.popquiz = (function () {
 		var docheight = $( window ).height();
 		
 		listtable = $('#list table').DataTable({
-	        "scrollY":   docheight - 61,
+	        "scrollY":   docheight - 92,
 	        "scrollX": "100%",
 	        "scrollCollapse": true,
 	        "paging":         false,
@@ -493,12 +501,27 @@ app.popquiz = (function () {
 	    var fx = new $.fn.dataTable.FixedColumns( listtable, {
         	leftColumns: 2
     	} );
+
+		$('.head').hide();
+		if(teamtype == 1)
+		{
+			$('.list3').show();
+		}
+		else if(teamtype == 2)
+		{
+			$('.list2').show();
+		}
+		else{
+			$('.list1').show();
+		}
+
 	}
 
 	function showRanking(){
 
 		$('.modal').modal('hide');
-		$('#rankingmodal').modal('show');
+		setTimeout(function(){$('#rankingmodal').modal('show');}, 510);
+		
 
 		var $list = $('#list'),
 			$rank = $('#ranking'),
@@ -514,13 +537,25 @@ app.popquiz = (function () {
 		}
 		
 		rankingtable = $('#ranking table').DataTable({
-	        "scrollY":       docheight - 41,
+	        "scrollY":       docheight - 72,
 	        "scrollCollapse": true,
 	        "paging":         false,
 	        bFilter: false, bInfo: false
 	        
 	    });
-/*
+
+		$('.head').hide();
+		if(teamtype == 1)
+		{
+			$('.ranking3').show();
+		}
+		else if(teamtype == 2)
+		{
+			$('.ranking2').show();
+		}
+		else{
+			$('.ranking1').show();
+		}/*
 	   	var fx = new $.fn.dataTable.FixedColumns( rankingtable, {
         	leftColumns: 2
     	} );*/
@@ -645,12 +680,17 @@ app.popquiz = (function () {
 	}
 
 	function doFilter(){
-		if(filter == 0){
-			filter = 1;
-			renderInterface(1);
+		if(teamtype == 0){
+			teamtype = 1;
+			renderInterface();
+		}
+		else if(teamtype == 1)
+		{
+			teamtype = 2;
+			renderInterface();
 		}
 		else{
-			filter = 0;
+			teamtype = 0;
 			renderInterface();
 		}
 		
@@ -697,7 +737,7 @@ app.popquiz = (function () {
 	}
 
 	function autoScroll(list){
-		var duration = 20000;
+		var duration = 30000;
 		if(scrollDown){
 			$(list + ' table').parent().animate({scrollTop: 2500}, { "duration": duration, "easing": "linear", complete: function(){
 				autoScroll(list);
@@ -705,7 +745,7 @@ app.popquiz = (function () {
 			scrollDown = false;
 		}
 		else{
-			$(list + ' table').parent().animate({scrollTop: 0}, { "duration": duration, "easing": "linear", complete: function(){
+			$(list + ' table').parent().animate({scrollTop: -200}, { "duration": duration, "easing": "linear", complete: function(){
 				autoScroll(list);
 			}});
 			scrollDown = true;

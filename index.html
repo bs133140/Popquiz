@@ -72,9 +72,13 @@
           </div>
         </div>-->
 
-        <div id="filter">
-          <div class="filter filter1">Circuitploegen</div>
-          <div class="filter filter2">Gelegenheidsploegen</div>
+        <div id="resheader">
+          <div class="head list1">SCORES PER RONDE</div>
+          <div class="head list2">SCORES PER RONDE - Gelegenheidsploegen</div>
+          <div class="head list3">SCORES PER RONDE - Circuitploegen</div>
+          <div class="head ranking1">DE STAND NA <span class="lastround"></span></div>
+          <div class="head ranking2">DE STAND NA <span class="lastround"></span> - Gelegenheidsploegen</div>
+          <div class="head ranking3">DE STAND NA <span class="lastround"></span> - Circuitploegen</div>
         </div>
 
         <div id="list"></div>
@@ -93,11 +97,16 @@
           <div class="modal-body">
             <center><h1>SCORES PER RONDE</h1></center><br/>
             <div class="panel panel-default" style="text-align:center;">
-              <div class="panel-heading"><span class="lastround"></span></div>
+              <div class="panel-heading"><span class="lastround"></span><span class="filtertext"></span></div>
               <div class="panel-body">
                 <div class="row">
                   <div class="col-xs-6"><h4>HOOGSTE SCORE</h4><div class="highscore"><span class="lastroundhighest"></span> / <span class="lastroundmax"></span></div></div>
                   <div class="col-xs-6"><h4>GEMIDDELDE SCORE</h4><div class="highscore"><span class="lastroundaverage"></span> / <span class="lastroundmax"></span></div></div>
+                </div>
+                <hr/>
+                <div class="row legenda">
+                  <div class="col-xs-6"><span class="badge orange">&nbsp;&nbsp;&nbsp;</span> Minder goede score</div>
+                  <div class="col-xs-6"><span class="badge red">&nbsp;&nbsp;&nbsp;</span> Slechte score</div>
                 </div>
               </div>
             </div>
@@ -115,11 +124,16 @@
           <div class="modal-body">
             <center><h1>DE STAND NA <span class="lastround"></span></h1></center>
             <div class="panel panel-default">
-              <div class="panel-heading"><center><span class="lastround"></span></center></div>
+              <div class="panel-heading"><center><span class="lastround"></span><span class="filtertext"></span></center></div>
               <div class="panel-body">
                 <div class="row">
                   <div class="col-xs-6"><h4>TOP 3 <span class="lastround"></span></h4><div class="top3lastround"></div></div>
                   <div class="col-xs-6"><h4>TOP 3 TOTAAL</h4><div class="top3total"></div></div>
+                </div>
+                <hr/>
+                <div class="legenda">
+                  <div>+ = Omhoog in de ranking tov vorige reeks</div>
+                  <div>- = Omlaag in de ranking tov vorige reeks</div>
                 </div>
               </div>
             </div>           
