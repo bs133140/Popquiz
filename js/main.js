@@ -13,7 +13,8 @@ app.popquiz = (function () {
         lastroundhighest = 0,
         lastroundaverage = 0,
         lastroundtotal = 0,
-        scrolling = false;
+        scrolling = false,
+        scrollDown = true;
 
 	function privateMethod() {
 		// ...
@@ -471,7 +472,13 @@ app.popquiz = (function () {
 	}
 
 	function showTable(){
+		// set scrolling
+		if(scrolling){
+			stopScroll();
+		}
+		$('.navbar').fadeOut();
 
+		// show table
 		if($('#list').is(':visible'))
 		{
 			showRanking();
@@ -501,16 +508,24 @@ app.popquiz = (function () {
 			}
 
 			if(e.keyCode==115)
-			{
+			{				
 				showTable();
 			}
 
+			if(e.keyCode==100)
+			{				
+				$('#iconplay').click();
+			}
 		});
 
 		$('#iconplay').click(function(){
-			$('#list table').parent().animate({scrollTop: 1500}, { "duration": 20000, "easing": "linear", complete: function(){
-				$('#list table').parent().animate({scrollTop: 0}, { "duration": 20000, "easing": "linear" });
-			}});
+			if(scrolling)
+			{				
+				stopScroll();
+			}
+			else{
+				startScroll();
+			}
 		});
 
 		$(window).resize(function(){
@@ -531,14 +546,49 @@ app.popquiz = (function () {
 		  			var oSettings = rankingtable.settings();
 		    		oSettings[0].oScroll.sY = $(window).height()-62; 
 		    		rankingtable.draw();
-
 	    		}
-
 	    	}
-
-
 		});
 
+	}
+
+
+	function startScroll(){
+		var list = '#ranking';
+
+		if($('#list').is(':visible'))
+		{
+			list = '#list';
+		}
+
+		autoScroll(list);
+		$('#iconplay').removeClass('glyphicon-play').addClass('glyphicon-pause');
+		scrolling = true;
+	}
+
+	function stopScroll(){
+		// stop scrolling
+		$('#list table').parent().stop(true, false);
+		$('#ranking table').parent().stop(true, false);
+		$('#iconplay').removeClass('glyphicon-pause').addClass('glyphicon-play');
+		scrolling = false;
+		scrollDown = !scrollDown;
+	}
+
+	function autoScroll(list){
+		var duration = 20000;
+		if(scrollDown){
+			$(list + ' table').parent().animate({scrollTop: 2500}, { "duration": duration, "easing": "linear", complete: function(){
+				autoScroll(list);
+			}});
+			scrollDown = false;
+		}
+		else{
+			$(list + ' table').parent().animate({scrollTop: 0}, { "duration": duration, "easing": "linear", complete: function(){
+				autoScroll(list);
+			}});
+			scrollDown = true;
+		}
 	}
 
 	popquiz.init = function () 
