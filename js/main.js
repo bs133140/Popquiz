@@ -6,7 +6,7 @@ app.popquiz = (function () {
 		teams = [],
 		rounds = [],
 		rankingAfterRound = [],
-        rankingPerRound = [],
+		rankingPerRound = [],
         lastround = 0,
         listtable = null,
         rankingtable = null,
@@ -15,7 +15,7 @@ app.popquiz = (function () {
         lastroundtotal = 0,
         scrolling = false,
         scrollDown = true,
-        teamtype = 0; // 0 = all, 1 = circuit, 2 = gelegenheid
+		teamtype = 0; // 0 = all, 1 = circuit, 2 = gelegenheid
 
 	function privateMethod() {
 		// ...
@@ -99,7 +99,7 @@ app.popquiz = (function () {
 		$('#poster').fadeOut(renderInterface);
 	}
 
-	function renderInterface(){
+	function renderInterface(pricesort){
 		var filteredteams = 0;
 
 		// show main wrapper
@@ -124,17 +124,28 @@ app.popquiz = (function () {
 		$('#ranking').html('<table class="stripe hover" cellspacing="0" width="100%"><thead id="rankinghead"></thead><tbody id="rankingbody"></tbody></table><div></div>');
 		
 		// sort rankings
+		var specSort = pricesort || false;
+		
 		for(var t=0;t<rankingAfterRound.length;t++){
 			rankingAfterRound[t].sort(dynamicSort("score")).reverse();
 			rankingPerRound[t].sort(dynamicSort("score")).reverse();
 		}
 
 		// set rank
+		
+		// t = round
 		for(var t=0;t<rankingAfterRound.length;t++){
 
 			var rank = 0,
-				prevscore = -1;
+				g_rank = 0, // gelegenheidsploeg rank
+				c_rank = 0, // circuitploeg rank
+				prevscore = -1,
+				g_prevscore = -1,
+				c_prevscore = -1,
+				g_idx = 0,
+				c_idx = 0;
 
+			// s = team sorted by score
 			for(var s=0;s<rankingAfterRound[t].length;s++){
 
 				if(rankingAfterRound[t][s].score!=prevscore)
@@ -143,7 +154,29 @@ app.popquiz = (function () {
 					prevscore = rankingAfterRound[t][s].score;
 				}
 
+				// gelegenheidsploeg
+				var srank = 0;
+				if(teams[rankingAfterRound[t][s].id-1].type == 2) {
+					if(rankingAfterRound[t][s].score!=g_prevscore) {
+						g_rank = (g_idx+1);
+						g_prevscore = rankingAfterRound[t][s].score;
+					}
+					srank = g_rank;
+					g_idx++;
+				}
+
+				// circuitploeg
+				if(teams[rankingAfterRound[t][s].id-1].type == 1) {
+					if(rankingAfterRound[t][s].score!=c_prevscore) {
+						c_rank = (c_idx+1);
+						c_prevscore = rankingAfterRound[t][s].score;
+					}
+					srank = c_rank;					
+					c_idx++;
+				}
+
 				rankingAfterRound[t][s].rank = rank;
+				rankingAfterRound[t][s].srank = srank;
 
 				// ranking last round
 				if(t==lastround)
@@ -194,7 +227,7 @@ app.popquiz = (function () {
 		}
 
     	// render ranking
-		renderRanking(lastround);
+		renderRanking(lastround, specSort);
 		renderList(lastround);
 
 		showTable(false);
@@ -202,8 +235,9 @@ app.popquiz = (function () {
 		$('#iconstat').show();
 		$('#iconplay').show();
 		$('#iconfilter').show();
+		$('#iconprice').show();
 
-		$('.navbar').fadeOut();
+		//$('.navbar').fadeOut();
 
 		lastroundaverage = parseFloat(lastroundtotal / filteredteams).toFixed(1);
 
@@ -255,7 +289,7 @@ app.popquiz = (function () {
 			if(teamtype == 0 || teamtype == team.type)
 			{
 				// Team name
-				var mytable ='<tr><td>' + team.id + '.</td><td>' + ( team.name.length>38?HTMLEncode(team.name.substring(0,35)) + ' ...':HTMLEncode(team.name)) + '</td>';
+				var mytable ='<tr><td>' + team.id + '.</td><td>' + ( team.name.length>38?HTMLEncode(team.name.substring(0,35)) + ' ...':HTMLEncode(team.name)) + (team.type == 1?'&nbsp;<span class="cbadge glyphicon glyphicon-bookmark">&nbsp;</span>':'')  + '</td>';
 
 				// Team scores
 				$.each(team.scores,function(x,score){
@@ -275,7 +309,7 @@ app.popquiz = (function () {
 	}
 
 
-	function renderRanking(round){
+	function renderRanking(round, specSort){
 		// render ranking
 		var $rankinghead = $('#rankinghead'),
 			$rankingbody = $('#rankingbody'),
@@ -290,7 +324,12 @@ app.popquiz = (function () {
 
 
 		// set head
-		$rankinghead.append('<th>Rank</th><th></th><th>Team</th><th>'+round+'</th><th>'+(round+1)+'</th><th>Total</th>'); //<th>Evolution</th><th>Highest</th><th>Lowest</th>');
+		if(specSort){
+			$rankinghead.append('<th>Rank</th><th></th><th>Rank (Binnen type ploeg)</th><th></th><th>Team</th><th>'+round+'</th><th>'+(round+1)+'</th><th>Total</th>'); //<th>Evolution</th><th>Highest</th><th>Lowest</th>');
+		} else {
+			$rankinghead.append('<th>Rank</th><th>Rank (Binnen type ploeg)</th><th></th><th>Team</th><th>'+round+'</th><th>'+(round+1)+'</th><th>Total</th>'); //<th>Evolution</th><th>Highest</th><th>Lowest</th>');
+		}
+		
 		$rankinghead.wrapInner('<tr></tr>');
 
 		$.each(rankingPerRound[round], function(t,tms){
@@ -379,7 +418,12 @@ app.popquiz = (function () {
 				}
 
 				// render table
-				$rankingbody.append('<tr><td>' + defrank + '</td><td>' + (diff>0?'+':(diff==0?'':'-')) + '</td><td>' + teams[rank.id-1].name + '</td><td>' + rankingPerRound[round-1][rrid0].score + '</td><td>' + rankingPerRound[round][rrid].score + '</td><td><span class="badge">' + rank.score +'</span></td></tr>'); //<td><span class="inlinesparkline">'+teams[rank.id-1].negranks.join(',')+'</span></td><td>'+getMinOfArray(teams[rank.id-1].ranks)+'</td><td>'+getMaxOfArray(teams[rank.id-1].ranks)+'</td></tr>');
+				if(specSort){
+					var mrank = (parseInt(rank.srank,10) * 10) + parseInt(teams[rank.id-1].type, 10);
+					$rankingbody.append('<tr><td>' + defrank + '</td><td style="color:transparent;">' + mrank + '</td><td>' + rank.srank + '</td><td>' + (diff>0?'+':(diff==0?'':'-')) + '</td><td>' + teams[rank.id-1].name + (teams[rank.id-1].type == 1?'&nbsp;<span class="cbadge glyphicon glyphicon-bookmark">&nbsp;</span>':'') + '</td><td>' + rankingPerRound[round-1][rrid0].score + '</td><td>' + rankingPerRound[round][rrid].score + '</td><td><span class="badge">' + rank.score +'</span></td></tr>'); //<td><span class="inlinesparkline">'+teams[rank.id-1].negranks.join(',')+'</span></td><td>'+getMinOfArray(teams[rank.id-1].ranks)+'</td><td>'+getMaxOfArray(teams[rank.id-1].ranks)+'</td></tr>');
+				} else {
+					$rankingbody.append('<tr><td>' + defrank + '</td><td>' + rank.srank + '</td><td>' + (diff>0?'+':(diff==0?'':'-')) + '</td><td>' + teams[rank.id-1].name + (teams[rank.id-1].type == 1?'&nbsp;<span class="cbadge glyphicon glyphicon-bookmark">&nbsp;</span>':'') + '</td><td>' + rankingPerRound[round-1][rrid0].score + '</td><td>' + rankingPerRound[round][rrid].score + '</td><td><span class="badge">' + rank.score +'</span></td></tr>'); //<td><span class="inlinesparkline">'+teams[rank.id-1].negranks.join(',')+'</span></td><td>'+getMinOfArray(teams[rank.id-1].ranks)+'</td><td>'+getMaxOfArray(teams[rank.id-1].ranks)+'</td></tr>');
+				}	
 			}
 
 		});
@@ -491,7 +535,7 @@ app.popquiz = (function () {
 		var docheight = $( window ).height();
 		
 		listtable = $('#list table').DataTable({
-	        "scrollY":   docheight - 92,
+	        "scrollY":   docheight - 240,
 	        "scrollX": "100%",
 	        "scrollCollapse": true,
 	        "paging":         false,
@@ -537,7 +581,7 @@ app.popquiz = (function () {
 		}
 		
 		rankingtable = $('#ranking table').DataTable({
-	        "scrollY":       docheight - 72,
+	        "scrollY":       docheight - 220,
 	        "scrollCollapse": true,
 	        "paging":         false,
 	        bFilter: false, bInfo: false
@@ -573,7 +617,7 @@ app.popquiz = (function () {
 		if(scrolling){
 			stopScroll();
 		}
-		$('.navbar').fadeOut();
+		//$('.navbar').fadeOut();
 
 		// show table
 		if($('#list').is(':visible'))
@@ -613,7 +657,7 @@ app.popquiz = (function () {
 			// Toggle menu
 			if(e.keyCode==113)
 			{
-				$('.navbar').fadeToggle();
+				//$('.navbar').toggle();
 			}
 
 			// Toggle list/ranking
@@ -645,6 +689,10 @@ app.popquiz = (function () {
 			doFilter();
 		});
 
+		$('#iconprice').click(function(){
+			doPrice();
+		});
+
 		$('#iconplay').click(function(){
 			if(scrolling)
 			{				
@@ -661,7 +709,7 @@ app.popquiz = (function () {
 			if($('#list').is(':visible'))
 			{
 	  			var oSettings = listtable.settings();
-	    		oSettings[0].oScroll.sY = $(window).height()-62; 
+	    		oSettings[0].oScroll.sY = $(window).height()-245; 
 	    		listtable.draw();
 	    	}
 	    	else
@@ -671,12 +719,18 @@ app.popquiz = (function () {
 	    		{
 	    			//console.info(rankingtable);
 		  			var oSettings = rankingtable.settings();
-		    		oSettings[0].oScroll.sY = $(window).height()-62; 
+		    		oSettings[0].oScroll.sY = $(window).height()-215; 
 		    		rankingtable.draw();
 	    		}
 	    	}
 		});
 
+	}
+
+	function doPrice(){
+		teamtype = 0;
+		showRanking();
+		renderInterface(true);
 	}
 
 	function doFilter(){
