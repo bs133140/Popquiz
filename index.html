@@ -28,16 +28,25 @@
 
   <body>
 
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <nav class="navbar navbar-inverse" role="navigation">
       <div class="container-fluid">
         <div class="navbar-header">
+            <img src="images/header.png" style="position:absolute;top:0;left:0;height:150px;" />
+            <div id="resheader">
+                <div class="head list1">SCORES PER RONDE</div>
+                <div class="head list2">SCORES PER RONDE - Gelegenheidsploegen</div>
+                <div class="head list3">SCORES PER RONDE - Circuitploegen</div>
+                <div class="head ranking1">DE STAND NA <span class="lastround"></span></div>
+                <div class="head ranking2">DE STAND NA <span class="lastround"></span> - Gelegenheidsploegen</div>
+                <div class="head ranking3">DE STAND NA <span class="lastround"></span> - Circuitploegen</div>
+              </div>
+            
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <img src="images/vzwresponse.jpg" style="height:30px;margin-top:10px;" />&nbsp;&nbsp;&nbsp;<img src="images/popquiz.png" style="height:20px;margin-top:15px;" />
           
         </div>
         <div id="navbar" class="navbar-collapse collapse">
@@ -45,6 +54,7 @@
             <li><span id="iconplay" style="display:none;" class="glyphicon glyphicon-play" aria-hidden="true" title="autoscroll"></span></li>
             <li><span id="iconstat" style="display:none;" class="glyphicon glyphicon-stats" aria-hidden="true" title="podium"></span></li>
             <li><span id="iconfilter" style="display:none;" class="glyphicon glyphicon-filter" aria-hidden="true" title="filter"></span></li>
+            <li><span id="iconprice" style="display:none;" class="glyphicon glyphicon-gift" aria-hidden="true" title="prijzen"></span></li>
             <li><span id="iconopen" class="glyphicon glyphicon-open" aria-hidden="true" title="open"></span><input type="file" id="fileInput" style="display:none;"></li>
           </ul>
         </div>
@@ -72,14 +82,7 @@
           </div>
         </div>-->
 
-        <div id="resheader">
-          <div class="head list1">SCORES PER RONDE</div>
-          <div class="head list2">SCORES PER RONDE - Gelegenheidsploegen</div>
-          <div class="head list3">SCORES PER RONDE - Circuitploegen</div>
-          <div class="head ranking1">DE STAND NA <span class="lastround"></span></div>
-          <div class="head ranking2">DE STAND NA <span class="lastround"></span> - Gelegenheidsploegen</div>
-          <div class="head ranking3">DE STAND NA <span class="lastround"></span> - Circuitploegen</div>
-        </div>
+
 
         <div id="list"></div>
 
