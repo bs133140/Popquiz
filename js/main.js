@@ -14,7 +14,8 @@ app.popquiz = (function () {
         lastroundaverage = 0,
         lastroundtotal = 0,
         scrolling = false,
-        scrollDown = true,
+		scrollDown = true,
+		headerheight = 100,
 		teamtype = 0; // 0 = all, 1 = circuit, 2 = gelegenheid
 
 	function privateMethod() {
@@ -535,7 +536,7 @@ app.popquiz = (function () {
 		var docheight = $( window ).height();
 		
 		listtable = $('#list table').DataTable({
-	        "scrollY":   docheight - 240,
+	        "scrollY":   docheight - (headerheight + 90),
 	        "scrollX": "100%",
 	        "scrollCollapse": true,
 	        "paging":         false,
@@ -581,7 +582,7 @@ app.popquiz = (function () {
 		}
 		
 		rankingtable = $('#ranking table').DataTable({
-	        "scrollY":       docheight - 220,
+	        "scrollY":       docheight - (headerheight + 70),
 	        "scrollCollapse": true,
 	        "paging":         false,
 	        bFilter: false, bInfo: false
@@ -709,7 +710,7 @@ app.popquiz = (function () {
 			if($('#list').is(':visible'))
 			{
 	  			var oSettings = listtable.settings();
-	    		oSettings[0].oScroll.sY = $(window).height()-245; 
+	    		oSettings[0].oScroll.sY = $(window).height()-(headerheight + 95); 
 	    		listtable.draw();
 	    	}
 	    	else
@@ -719,7 +720,7 @@ app.popquiz = (function () {
 	    		{
 	    			//console.info(rankingtable);
 		  			var oSettings = rankingtable.settings();
-		    		oSettings[0].oScroll.sY = $(window).height()-215; 
+		    		oSettings[0].oScroll.sY = $(window).height()-(headerheight + 65); 
 		    		rankingtable.draw();
 	    		}
 	    	}
